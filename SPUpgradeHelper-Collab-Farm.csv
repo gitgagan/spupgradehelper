@@ -1,0 +1,5 @@
+DBName,DBInstance,UpgradeSet
+WSS_Content_001,SQLServer001,A
+WSS_Content_002,SQLServer002,B
+WSS_Content_003,SQLServer003,A
+WSS_Content_004,SQLServer004,B
