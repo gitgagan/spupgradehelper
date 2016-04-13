@@ -1,11 +1,11 @@
 ## Description
 Migrating MOSS 2007 to SP 2013? This script takes a CSV of databases and runs upgrade Cmdlets in bulk (DB version/Mount/Dismount/Upgrade-SPSite/Claims auth)
 
-[![](https://raw.githubusercontent.com/spjeff/spupgradehelper/master/doc/download.png)](https://github.com/spjeff/spupgradehelper/releases/download/SPUpgradeHelper/SPUpgradeHelper.zip)
-
 Upgrading MOSS to SP2013 is a tedious process with many Cmdlets, especially if you have many databases. This script aims to help automate that process. 
 
 Given a CSV with SQL instance and content database names, this script offers Cmdlets to run upgrade steps across many databases all at once. No more TXT or XLS copy and paste madness. Simply populate the CSV, get familiar with UH* Cmdlets and upgrade with ease.
+
+[![](https://raw.githubusercontent.com/spjeff/spupgradehelper/master/doc/download.png)](https://github.com/spjeff/spupgradehelper/releases/download/SPUpgradeHelper/SPUpgradeHelper.zip)
 
 ## Key Features
 * Read CSV of databases
