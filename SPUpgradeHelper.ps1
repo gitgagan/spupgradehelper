@@ -18,8 +18,8 @@
 .NOTES  
     File Name     : SPUpgradeHelper.ps1
     Author        : Jeff Jones - @spjeff
-    Version       : 1.3
-	Last Modified : 01-13-2015
+    Version       : 1.31
+	Last Modified : 01-29-2017
 .LINK
 	http://spupgradehelper.codeplex.com/
 #>
@@ -293,7 +293,7 @@ Function UHTest () {
 "@
 
 Write-Host "SPUpgradeHelper loaded [OK]"  -ForegroundColor Green
-md "$home\Documents\WindowsPowerShell\Modules\SPUpgradeHelper" -ErrorAction SilentlyContinue | Out-Null
+mkdir "$home\Documents\WindowsPowerShell\Modules\SPUpgradeHelper" -ErrorAction SilentlyContinue | Out-Null
 $UHFunctions | Out-File "$home\Documents\WindowsPowerShell\Modules\SPUpgradeHelper\SPUpgradeHelper.psm1" -Force
 Import-Module SPUpgradeHelper
 UHReadCSV
