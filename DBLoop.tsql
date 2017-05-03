@@ -1,0 +1,93 @@
+-- DESCRIPTION --
+-- creates central SQL tracking database
+-- manages queue
+-- SharePoint worker machines request next available DB name and run upgrade
+-- overall % complete available centrally with TSQL query (EXEC showProgress)
+
+-- FILES --
+-- DBLoop.tsql      Creates SQL database schema and stored procedures
+-- DBLoop.ps1       SP worker thread to request next available DB name and run upgrade
+--                  PARAM = Window Identifier (A,B,C,D) which goes to 
+--                  central DB for thread status tracking
+--
+--                  Run like:
+--                  .\DBLoop.ps1 A
+--                  .\DBLoop.ps1 B
+--                  .\DBLoop.ps1 C
+--                  .\DBLoop.ps1 D
+--
+-- DBLoopEmail.ps1  Sends email with HTML table of above data for easy mobile monitoring
+-- ----------------------------------------
+
+USE [DBLoop]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Databases](
+	[DBName] [varchar](255) NULL,
+	[Instance] [varchar](255) NULL,
+	[Status] [varchar](255) NULL,
+	[Time] [datetime] NULL,
+	[ByMachine] [varchar](255) NULL,
+	[Size] [int] NULL
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Machines](
+	[Machine] [varchar](255) NULL,
+	[Status] [varchar](255) NULL,
+	[Time] [datetime] NULL
+) ON [PRIMARY]
+GO
+
+CREATE PROCEDURE [dbo].[getNextAvailableDatabase]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	BEGIN TRANSACTION [Tran1]
+
+	BEGIN TRY
+		--core
+		DECLARE @dbname VARCHAR(255)
+		SET @dbname = (SELECT TOP 1 DBName FROM [Databases] WHERE [Status] IS NULL)
+		UPDATE [Databases] SET Status='Assigned' WHERE [DBName]=@dbname
+		SELECT * FROM [Databases] WHERE [DBName]=@dbname
+
+		--save
+		COMMIT TRANSACTION [Tran1]
+	END TRY
+	BEGIN CATCH
+		--rollback
+		ROLLBACK TRANSACTION [Tran1]
+	END CATCH
+	
+END
+GO
+
+
+CREATE PROCEDURE [dbo].[showProgress]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT status, count(*) AS count FROM [dbo].[Databases] group by status
+	SELECT * FROM [dbo].[Databases] order by [time] desc
+	SELECT * FROM [dbo].[Machines]
+
+END
+GO
