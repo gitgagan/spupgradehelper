@@ -31,14 +31,20 @@ Given a CSV with SQL instance and content database names, this script offers Cmd
 ## Microsoft Upgrade Process
 ![image](https://raw.githubusercontent.com/spjeff/spupgradehelper/master/doc/msupg.png)
 
-## DBLoop
-Fully automatic high speed upgrade with parallel processing. Central SQL database contains table with available Content Database targets. Each SP worker machines runs "DBLoop.ps1" to get next available database, mark reserved, upgrade, and report status. Email can be sent based on the central tracking database detail to show % complete and status. Works great on farms with a high number of content databases (ex: 100+)
+## DBLoop / HyperUpgrade
+Fully automatic high speed upgrade with parallel processing. Central SQL database contains table with available Content Database targets. Each SP worker machines runs "HyperUpgrade.psm1" to get next available database, mark reserved, upgrade, and report status. Email can be sent based on the central tracking database detail to show % complete and status. Works great on farms with a high number of content databases (ex: 100+)
 
 * DBLoop.tsql (creates SQL database schema and stored procedures)
-* DBLoop.ps1 (SP worker thread to request next available DB name and run * upgrade)
+* HyperUpgrade.psm1 (SP worker thread to request next available DB name and run * upgrade)
 * DBLoopEmail.ps1 (Sends email with HTML table of above data for easy monitoring)
 
 ![image](https://raw.githubusercontent.com/spjeff/spupgradehelper/master/doc/dbloop.png)
+
+Usage:
+1. Execute DBLoop.tsql on SQL server
+2. Import-Module HyperUpgrade.psm1
+3. Import-UpgradeDatabases with a CSV file containing the SP Content Databases names and location on a single server
+4. On each SP Worker machine execute Start-UpgradeSession
 
 ## Screenshots
 * Download ZIP and extract

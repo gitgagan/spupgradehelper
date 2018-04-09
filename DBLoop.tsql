@@ -91,3 +91,24 @@ BEGIN
 
 END
 GO
+
+CREATE PROCEDURE [dbo].[registerOrUpdateMachine]
+(
+    @Machine varchar(255),
+ 	@Status varchar(255),
+	@Time datetime
+)
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Machines
+        WHERE Machine=@Machine
+    )
+    BEGIN
+        UPDATE Machines set Status=@Status, Time=@Time
+        WHERE Machine=@Machine
+    END
+ELSE
+    BEGIN
+        INSERT into Machines Values (@Machine, @Status, @Time)
+    END
+END
