@@ -149,7 +149,7 @@ Function UHUpgrade (`$upgradeSet) {
 			`$sites = `$db | Get-SPSite -Limit All
 			foreach (`$site in `$sites) {
 				`$site.Url
-				`$site | Upgrade-SPSite -VersionUpgrade
+				`$site | Upgrade-SPSite -VersionUpgrade -Unthrottled
 				#WIP -QueueOnly
 			}
 			

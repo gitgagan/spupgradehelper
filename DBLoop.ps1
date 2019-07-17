@@ -61,7 +61,7 @@ function Main() {
 		
 		#Core
 		#Mount-SPContentDatabase -Name $dbname -DatabaseServer $db.Instance -WebApplication $url 
-		#Get-SPContentDatabase $dbname | Get-SPSite -Limit All | Upgrade-SPSite -VersionUpgrade
+		#Get-SPContentDatabase $dbname | Get-SPSite -Limit All | Upgrade-SPSite -VersionUpgrade -Unthrottled
 		
 		#Get-SPContentDatabase $dbname | Get-SPSite -Limit All |% {$u=$_.url; $u; Disable-SPFeature 87294c72-f260-42f3-a41b-981a2ffce37a -Url $u -Confirm:$false}
 		
